@@ -1,9 +1,13 @@
 const cards = document.querySelectorAll(".card")
 let timetext = document.getElementById("time");
 let scoretext = document.getElementById("score");
+let started=false;
 cards.forEach((card)=>{
     card.addEventListener("click",()=>{
-        checkcards(card);
+        if(!started){
+            checkcards(card);
+        }
+
     })
 })
 
@@ -17,6 +21,7 @@ const checkcards=(card)=>{
     let text=card.querySelector(".card-back").innerText;
     card.classList.add("isflipped");
     if(sequence.length==1){
+        started=true;
         sequence.push({text,card});
         console.log(sequence);
         if(sequence[0].text==text){
@@ -31,7 +36,7 @@ const checkcards=(card)=>{
         }else{
             removeClass(false);
         }
-        
+
     }else if(sequence.length==0){
         sequence.push({text,card});
     }
@@ -42,12 +47,15 @@ const removeClass = (a) =>{
     if(a===true){
         sequence.forEach((el)=>el.card.classList.add("done"));
         sequence=[];
+        started=false;
         return;
     }
     setTimeout(()=>{
         sequence.forEach((el)=>el.card.classList.remove("isflipped"));
         sequence=[];
-    },1000)  
+        started=false;
+    },650) 
+
 }
 
 setInterval(()=>{
